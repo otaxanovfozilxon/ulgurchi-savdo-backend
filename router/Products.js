@@ -19,15 +19,20 @@ router.get("/", async (req, res) => {
 
 
 router.post("/", upload.array("photos"), async (req, res) => {
-    let { files } = req
-    const { title, price, about } = req.body
-    let urls = []
-    for (let file of files) {
-        let url = `${req.protocol}://${req.get("host")}/images/${file.filename}`
-        urls.push(url)
+    try {
+        let { files } = req
+        const { title, price, about } = req.body
+        let urls = []
+        for (let file of files) {
+            let url = `${req.protocol}://${req.get("host")}/images/${file.filename}`
+            urls.push(url)
+        }
+        let newFIle = await Products.create({ title, price, about, urls })
+        res.status(201).json({ state: true, msg: "Created", innerData: newFIle })
     }
-    let newFIle = await Products.create({ title, price, about, urls })
-    res.status(201).json({ state: true, msg: "Created", innerData: newFIle })
+    catch {
+        res.status(500).json({ error: "Internal server error" });
+    }
 });
 
 
