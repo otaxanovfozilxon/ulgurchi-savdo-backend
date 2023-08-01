@@ -31,7 +31,7 @@ router.post("/", upload.array("photos"), async (req, res) => {
         res.status(201).json({ state: true, msg: "Created", innerData: newFIle })
     }
     catch {
-        res.status(500).json({ error: "Internal server error" });
+        res.status(500).json({ error: "Error While Creating" });
     }
 });
 
