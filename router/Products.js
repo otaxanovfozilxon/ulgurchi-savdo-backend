@@ -6,13 +6,10 @@ const { upload } = require("../middleware/upload")
 
 router.get("/", async (req, res) => {
     try {
-        // Fetch all products from the database
         const products = await Products.find();
 
-        // Send the products as a response
         res.status(200).json(products);
     } catch (error) {
-        // If an error occurs, send an error response
         res.status(500).json({ error: "Internal server error" });
     }
 });
@@ -50,18 +47,15 @@ router.put("/:id", async (req, res) => {
         const product = await Products.findByIdAndUpdate(
             id,
             { $set: req.body },
-            { new: true } // To return the updated product
+            { new: true }
         );
 
-        // If the product is not found, send a 404 response
         if (!product) {
             return res.status(404).json({ error: "Product not found" });
         }
 
-        // Send the updated product as a response
         res.status(200).json({ message: "Product updated successfully", product });
     } catch (error) {
-        // If an error occurs, send an error response
         res.status(500).json({ error: "Internal server error" });
     }
 });
@@ -71,21 +65,17 @@ router.delete("/:id", async (req, res) => {
     try {
         const { id } = req.params;
 
-        // Find the product in the database by ID and delete it
         const deletedProduct = await Products.findByIdAndDelete(id);
 
-        // If the product is not found, send a 404 response
         if (!deletedProduct) {
             return res.status(404).json({ error: "Product not found" });
         }
-
-        // Send a response indicating success
         res.status(200).json({ message: "Product deleted successfully" });
     } catch (error) {
-        // If an error occurs, send an error response
         res.status(500).json({ error: "Internal server error" });
     }
 });
 
 
-module.exports = router  
+module.exports = router
+
